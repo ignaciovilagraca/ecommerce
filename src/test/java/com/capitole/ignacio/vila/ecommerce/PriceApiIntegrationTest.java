@@ -37,7 +37,7 @@ public class PriceApiIntegrationTest {
     }
 
     @Test
-    void givenTestCase2() {
+    void givenTestCase2() throws Exception {
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/price")
                                 .queryParam("brandId", "1")
@@ -55,7 +55,7 @@ public class PriceApiIntegrationTest {
     }
 
     @Test
-    void givenTestCase3() {
+    void givenTestCase3() throws Exception {
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/price")
                                 .queryParam("brandId", "1")
@@ -73,7 +73,7 @@ public class PriceApiIntegrationTest {
     }
 
     @Test
-    void givenTestCase4() {
+    void givenTestCase4() throws Exception {
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/price")
                                 .queryParam("brandId", "1")
@@ -91,7 +91,7 @@ public class PriceApiIntegrationTest {
     }
 
     @Test
-    void givenTestCase5() {
+    void givenTestCase5() throws Exception {
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/price")
                                 .queryParam("brandId", "1")
