@@ -1,7 +1,11 @@
 package com.capitole.ignacio.vila.ecommerce.domain;
 
 import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
+@Builder
 public class Price {
     private Long id;
     private Brand brand;
