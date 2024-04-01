@@ -2,7 +2,9 @@ package com.capitole.ignacio.vila.ecommerce.frameworks.web;
 
 import com.capitole.ignacio.vila.ecommerce.domain.Brand;
 import java.time.LocalDateTime;
+import lombok.Data;
 
+@Data
 public class PriceDTO {
     private Long id;
     private Brand brand;
