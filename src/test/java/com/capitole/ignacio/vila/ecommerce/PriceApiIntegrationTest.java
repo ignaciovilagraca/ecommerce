@@ -21,19 +21,19 @@ public class PriceApiIntegrationTest {
     @Test
     void givenTestCase1() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/price")
-                        .queryParam("brandId", "1")
-                        .queryParam("productId", "35455")
-                        .queryParam("date", "2020-06-14-10.00.00")
-        ).andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.brand.id").value(1))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.startDate").value("2020-06-14-00.00.00"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.endDate").value("2020-12-31-23.59.59"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.productId").value(35455))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.priority").value(0))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(35.50))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.currency").value("EUR"));
+                        MockMvcRequestBuilders.get("/price")
+                                .queryParam("brandId", "1")
+                                .queryParam("productId", "35455")
+                                .queryParam("date", "2020-06-14-10.00.00")
+                ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.brand.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.startDate").value("2020-06-14-00.00.00"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.endDate").value("2020-12-31-23.59.59"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.productId").value(35455))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.priority").value(0))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(35.50))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.currency").value("EUR"));
     }
 
     @Test
@@ -106,5 +106,50 @@ public class PriceApiIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.priority").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(38.95))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.currency").value("EUR"));
+    }
+
+    @Test
+    void noPriceForGivenDate() throws Exception {
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/price")
+                                .queryParam("brandId", "1")
+                                .queryParam("productId", "35455")
+                                .queryParam("date", "2019-06-16-21.00.00")
+                ).andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason("No price available for the given input"));
+    }
+
+    @Test
+    void invalidBrandId() throws Exception {
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/price")
+                                .queryParam("brandId", "0")
+                                .queryParam("productId", "35455")
+                                .queryParam("date", "2019-06-16-21.00.00")
+                ).andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().reason("Invalid brand id"));
+        ;
+    }
+
+    @Test
+    void invalidProductId() throws Exception {
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/price")
+                                .queryParam("brandId", "1")
+                                .queryParam("productId", "0")
+                                .queryParam("date", "2019-06-16-21.00.00")
+                ).andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().reason("Invalid product id"));
+    }
+
+    @Test
+    void invalidDate() throws Exception {
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/price")
+                                .queryParam("brandId", "1")
+                                .queryParam("productId", "35455")
+                                .queryParam("date", "fail")
+                ).andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().reason("Invalid date"));
     }
 }
